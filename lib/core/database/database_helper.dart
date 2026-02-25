@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 class DatabaseHelper {
   static Database? _database;
   static const _dbName = 'zenscreen.db';
-  static const _dbVersion = 1;
+  static const _dbVersion = 2;
 
   Future<Database> get database async {
     _database ??= await _initDatabase();
@@ -14,7 +14,12 @@ class DatabaseHelper {
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, _dbName);
-    return openDatabase(path, version: _dbVersion, onCreate: _onCreate);
+    return openDatabase(
+      path,
+      version: _dbVersion,
+      onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
+    );
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -71,6 +76,28 @@ class DatabaseHelper {
         is_strict_mode INTEGER DEFAULT 0
       )
     ''');
+    await _createFrictionEventsTable(db);
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await _createFrictionEventsTable(db);
+    }
+  }
+
+  Future<void> _createFrictionEventsTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS friction_events (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        timestamp TEXT NOT NULL,
+        app_package TEXT NOT NULL,
+        app_name TEXT NOT NULL DEFAULT '',
+        friction_type INTEGER NOT NULL DEFAULT 0,
+        user_action INTEGER NOT NULL DEFAULT 0,
+        intention_type INTEGER,
+        duration_seconds INTEGER DEFAULT 0
+      )
+    ''');
   }
 
   /// Insert a new app group and return its ID.
@@ -103,5 +130,52 @@ class DatabaseHelper {
       'package_name': packageName,
       'app_name': appName,
     });
+  }
+
+  /// Retrieves all app groups.
+  Future<List<Map<String, dynamic>>> getAppGroups() async {
+    final db = await database;
+    return db.query('app_groups');
+  }
+
+  /// Retrieves all blocked apps in a given group.
+  Future<List<Map<String, dynamic>>> getBlockedApps(int groupId) async {
+    final db = await database;
+    return db.query(
+      'blocked_apps',
+      where: 'group_id = ?',
+      whereArgs: [groupId],
+    );
+  }
+
+  /// Updates the friction type for an app group.
+  Future<void> updateGroupFrictionType(int groupId, int frictionType) async {
+    final db = await database;
+    await db.update(
+      'app_groups',
+      {'friction_type': frictionType},
+      where: 'id = ?',
+      whereArgs: [groupId],
+    );
+  }
+
+  /// Inserts a friction event log.
+  Future<int> insertFrictionEvent(Map<String, dynamic> event) async {
+    final db = await database;
+    return db.insert('friction_events', event);
+  }
+
+  /// Retrieves friction events for a given date range.
+  Future<List<Map<String, dynamic>>> getFrictionEvents({
+    required DateTime start,
+    required DateTime end,
+  }) async {
+    final db = await database;
+    return db.query(
+      'friction_events',
+      where: 'timestamp >= ? AND timestamp <= ?',
+      whereArgs: [start.toIso8601String(), end.toIso8601String()],
+      orderBy: 'timestamp DESC',
+    );
   }
 }

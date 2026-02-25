@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/friction/screens/friction_overlay_screen.dart';
 import '../../features/shell/shell_screen.dart';
 import '../../features/dashboard/screens/dashboard_screen.dart';
 import '../../features/statistics/screens/statistics_screen.dart';
@@ -8,7 +9,7 @@ import '../../features/settings/screens/settings_screen.dart';
 import '../../features/onboarding/screens/onboarding_screen.dart';
 import '../providers/providers.dart';
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final rootNavigatorKey = GlobalKey<NavigatorState>();
 final _dashboardNavKey = GlobalKey<NavigatorState>(debugLabel: 'dashboard');
 final _statisticsNavKey = GlobalKey<NavigatorState>(debugLabel: 'statistics');
 final _settingsNavKey = GlobalKey<NavigatorState>(debugLabel: 'settings');
@@ -17,7 +18,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   final prefs = ref.watch(preferencesServiceProvider);
 
   return GoRouter(
-    navigatorKey: _rootNavigatorKey,
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/dashboard',
     redirect: (context, state) {
       final onboardingComplete = prefs.isOnboardingComplete;
@@ -29,14 +30,25 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: '/onboarding',
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => const OnboardingScreen(),
       ),
       GoRoute(
         path: '/report',
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) => const Scaffold(
           body: Center(child: Text('Weekly Report')),
+        ),
+      ),
+      GoRoute(
+        path: '/friction',
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          opaque: false,
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          child: const FrictionOverlayScreen(),
         ),
       ),
       StatefulShellRoute.indexedStack(

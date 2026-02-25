@@ -34,4 +34,10 @@ class PreferencesService {
   // Grace period
   int get gracePeriodCount => _prefs.getInt('grace_period') ?? 3;
   Future<void> setGracePeriodCount(int v) => _prefs.setInt('grace_period', v);
+
+  // Friction escalation
+  bool get escalationEnabled =>
+      _prefs.getBool('escalation_enabled') ?? true;
+  Future<void> setEscalationEnabled(bool v) =>
+      _prefs.setBool('escalation_enabled', v);
 }
