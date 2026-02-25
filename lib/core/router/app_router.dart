@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/blocking/screens/blocking_overlay_screen.dart';
+import '../../features/blocking/screens/blocking_screen.dart';
+import '../../features/blocking/screens/group_edit_screen.dart';
+import '../../features/blocking/screens/strict_mode_screen.dart';
+import '../../features/blocking/screens/time_profiles_screen.dart';
 import '../../features/friction/screens/friction_overlay_screen.dart';
 import '../../features/shell/shell_screen.dart';
 import '../../features/dashboard/screens/dashboard_screen.dart';
@@ -51,6 +56,22 @@ final routerProvider = Provider<GoRouter>((ref) {
           child: const FrictionOverlayScreen(),
         ),
       ),
+      GoRoute(
+        path: '/blocking-overlay',
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final packageName =
+              state.uri.queryParameters['package'] ?? '';
+          return CustomTransitionPage<void>(
+            opaque: false,
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: BlockingOverlayScreen(packageName: packageName),
+          );
+        },
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             ShellScreen(navigationShell: navigationShell),
@@ -98,31 +119,25 @@ final routerProvider = Provider<GoRouter>((ref) {
                 routes: [
                   GoRoute(
                     path: 'blocking',
-                    builder: (context, state) => const Scaffold(
-                      body: Center(child: Text('Blocking Management')),
-                    ),
+                    builder: (context, state) => const BlockingScreen(),
                     routes: [
                       GoRoute(
                         path: 'group/:id',
-                        builder: (context, state) => Scaffold(
-                          body: Center(
-                              child: Text(
-                                  'Group: ${state.pathParameters['id']}')),
+                        builder: (context, state) => GroupEditScreen(
+                          groupId: state.pathParameters['id'] ?? '0',
                         ),
                       ),
                     ],
                   ),
                   GoRoute(
                     path: 'profiles',
-                    builder: (context, state) => const Scaffold(
-                      body: Center(child: Text('Time Profiles')),
-                    ),
+                    builder: (context, state) =>
+                        const TimeProfilesScreen(),
                   ),
                   GoRoute(
                     path: 'strict-mode',
-                    builder: (context, state) => const Scaffold(
-                      body: Center(child: Text('Strict Mode')),
-                    ),
+                    builder: (context, state) =>
+                        const StrictModeScreen(),
                   ),
                   GoRoute(
                     path: 'paywall',

@@ -5,15 +5,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/services/monitoring_service.dart';
 import '../../../core/providers/service_providers.dart';
+import '../../blocking/providers/blocking_provider.dart';
+import '../../blocking/screens/blocking_overlay_screen.dart';
 import '../providers/friction_provider.dart';
 import '../providers/friction_settings_provider.dart';
 import '../screens/friction_overlay_screen.dart';
 
 /// Connects [MonitoringService] app-open events to the friction system.
 ///
-/// When a monitored app opens, the interceptor checks whether the app is in
-/// a blocked group, respects the grace period, and shows the appropriate
-/// friction overlay if needed.
+/// When a monitored app opens, the interceptor first checks if the app is
+/// hard-blocked (schedule, daily limit, or strict mode). If blocked, it shows
+/// the blocking overlay instead of friction. Otherwise it checks whether the
+/// app is in a blocked group, respects the grace period, and shows the
+/// appropriate friction overlay if needed.
 class FrictionInterceptor {
   final Ref _ref;
   StreamSubscription<AppOpenEvent>? _subscription;
@@ -39,6 +43,14 @@ class FrictionInterceptor {
 
   /// Handles an incoming app-open event.
   Future<void> _onAppOpen(AppOpenEvent event) async {
+    // --- Phase 5: Check hard blocking first (takes priority over friction) ---
+    final blockingNotifier = _ref.read(blockingProvider.notifier);
+    if (blockingNotifier.isAppBlocked(event.packageName)) {
+      _showBlockingOverlay(event.packageName);
+      return;
+    }
+
+    // --- Original friction flow ---
     // Check if the app is in a blocked group.
     final settings = _ref.read(frictionSettingsProvider.notifier);
     final isBlocked = await settings.isAppBlocked(event.packageName);
@@ -56,6 +68,27 @@ class FrictionInterceptor {
 
     // Show the friction overlay.
     _showFrictionOverlay();
+  }
+
+  /// Pushes the blocking overlay screen onto the navigator (BLCK-04).
+  void _showBlockingOverlay(String packageName) {
+    final navigator = navigatorKey.currentState;
+    if (navigator == null) return;
+
+    navigator.push(
+      PageRouteBuilder<void>(
+        opaque: false,
+        barrierDismissible: false,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return FadeTransition(
+            opacity: animation,
+            child: BlockingOverlayScreen(packageName: packageName),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 300),
+        reverseTransitionDuration: const Duration(milliseconds: 200),
+      ),
+    );
   }
 
   /// Pushes the friction overlay screen onto the navigator.
