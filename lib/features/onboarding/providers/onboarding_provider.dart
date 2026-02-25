@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/enums.dart';
 import '../../../core/database/database_helper.dart';
@@ -85,26 +86,31 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
     }
 
     // Save selected apps as app groups in the database
-    final frictionIndex = (state.selectedFriction ?? FrictionType.wait).index;
+    try {
+      final frictionIndex =
+          (state.selectedFriction ?? FrictionType.wait).index;
 
-    for (final entry in state.selectedApps.entries) {
-      final category = entry.key;
-      final apps = entry.value;
-      if (apps.isEmpty) continue;
+      for (final entry in state.selectedApps.entries) {
+        final category = entry.key;
+        final apps = entry.value;
+        if (apps.isEmpty) continue;
 
-      final groupId = await _db.insertAppGroup(
-        name: category,
-        icon: _iconForCategory(category),
-        frictionType: frictionIndex,
-      );
-
-      for (final appName in apps) {
-        await _db.insertBlockedApp(
-          groupId: groupId,
-          packageName: _packageForApp(appName),
-          appName: appName,
+        final groupId = await _db.insertAppGroup(
+          name: category,
+          icon: _iconForCategory(category),
+          frictionType: frictionIndex,
         );
+
+        for (final appName in apps) {
+          await _db.insertBlockedApp(
+            groupId: groupId,
+            packageName: _packageForApp(appName),
+            appName: appName,
+          );
+        }
       }
+    } catch (e) {
+      debugPrint('DB write skipped (web): $e');
     }
 
     // Mark onboarding complete

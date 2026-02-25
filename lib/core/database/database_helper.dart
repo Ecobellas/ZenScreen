@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -6,7 +7,13 @@ class DatabaseHelper {
   static const _dbName = 'zenscreen.db';
   static const _dbVersion = 3;
 
+  /// Returns true when running on web (DB unavailable).
+  bool get isStub => kIsWeb;
+
   Future<Database> get database async {
+    if (kIsWeb) {
+      throw StateError('SQLite is not available on web');
+    }
     _database ??= await _initDatabase();
     return _database!;
   }
