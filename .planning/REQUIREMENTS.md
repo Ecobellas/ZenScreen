@@ -97,7 +97,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Platform Integration
 
 - [ ] **PLAT-01**: Background service running continuously to monitor app usage (foreground service on Android, background app refresh on iOS)
-- [ ] **PLAT-02**: Method Channel bridge for native platform communication (Flutter ↔ iOS/Android)
+- [ ] **PLAT-02**: Method Channel bridge for native platform communication (Flutter <-> iOS/Android)
 - [ ] **PLAT-03**: Permission handling: request and manage Usage Access (Android), Screen Time (iOS), Notification permissions
 - [ ] **PLAT-04**: App usage data collection from native APIs (UsageStatsManager / Screen Time API)
 
@@ -153,54 +153,54 @@ Requirements for initial release. Each maps to roadmap phases.
 | ONBD-04 | Phase 2 | Pending |
 | ONBD-05 | Phase 2 | Pending |
 | ONBD-06 | Phase 2 | Pending |
-| FRIC-01 | Phase 3 | Pending |
-| FRIC-02 | Phase 3 | Pending |
-| FRIC-03 | Phase 3 | Pending |
-| FRIC-04 | Phase 3 | Pending |
-| FRIC-05 | Phase 3 | Pending |
-| FRIC-06 | Phase 3 | Pending |
-| FRIC-07 | Phase 3 | Pending |
-| BLCK-01 | Phase 4 | Pending |
-| BLCK-02 | Phase 4 | Pending |
-| BLCK-03 | Phase 4 | Pending |
-| BLCK-04 | Phase 4 | Pending |
-| BLCK-05 | Phase 4 | Pending |
-| BLCK-06 | Phase 4 | Pending |
-| BLCK-07 | Phase 4 | Pending |
-| BLCK-08 | Phase 4 | Pending |
-| STRK-01 | Phase 4 | Pending |
-| STRK-02 | Phase 4 | Pending |
-| STRK-03 | Phase 4 | Pending |
-| STRK-04 | Phase 4 | Pending |
-| INTJ-01 | Phase 5 | Pending |
-| INTJ-02 | Phase 5 | Pending |
-| INTJ-03 | Phase 5 | Pending |
-| INTJ-04 | Phase 5 | Pending |
-| HLTH-01 | Phase 5 | Pending |
-| HLTH-02 | Phase 5 | Pending |
-| HLTH-03 | Phase 5 | Pending |
-| HLTH-04 | Phase 5 | Pending |
-| DASH-01 | Phase 5 | Pending |
-| DASH-02 | Phase 5 | Pending |
-| DASH-03 | Phase 5 | Pending |
-| DASH-04 | Phase 5 | Pending |
-| STAT-01 | Phase 5 | Pending |
-| STAT-02 | Phase 5 | Pending |
-| STAT-03 | Phase 5 | Pending |
-| STAT-04 | Phase 5 | Pending |
-| REPT-01 | Phase 6 | Pending |
-| REPT-02 | Phase 6 | Pending |
-| REPT-03 | Phase 6 | Pending |
-| REPT-04 | Phase 6 | Pending |
-| STNG-01 | Phase 6 | Pending |
-| STNG-02 | Phase 6 | Pending |
-| STNG-03 | Phase 6 | Pending |
-| STNG-04 | Phase 6 | Pending |
-| STNG-05 | Phase 6 | Pending |
-| PLAT-01 | Phase 4 | Pending |
-| PLAT-02 | Phase 4 | Pending |
-| PLAT-03 | Phase 4 | Pending |
-| PLAT-04 | Phase 4 | Pending |
+| PLAT-01 | Phase 3 | Pending |
+| PLAT-02 | Phase 3 | Pending |
+| PLAT-03 | Phase 3 | Pending |
+| PLAT-04 | Phase 3 | Pending |
+| FRIC-01 | Phase 4 | Pending |
+| FRIC-02 | Phase 4 | Pending |
+| FRIC-03 | Phase 4 | Pending |
+| FRIC-04 | Phase 4 | Pending |
+| FRIC-05 | Phase 4 | Pending |
+| FRIC-06 | Phase 4 | Pending |
+| FRIC-07 | Phase 4 | Pending |
+| BLCK-01 | Phase 5 | Pending |
+| BLCK-02 | Phase 5 | Pending |
+| BLCK-03 | Phase 5 | Pending |
+| BLCK-04 | Phase 5 | Pending |
+| BLCK-05 | Phase 5 | Pending |
+| BLCK-06 | Phase 5 | Pending |
+| BLCK-07 | Phase 5 | Pending |
+| BLCK-08 | Phase 5 | Pending |
+| STRK-01 | Phase 5 | Pending |
+| STRK-02 | Phase 5 | Pending |
+| STRK-03 | Phase 5 | Pending |
+| STRK-04 | Phase 5 | Pending |
+| INTJ-01 | Phase 6 | Pending |
+| INTJ-02 | Phase 6 | Pending |
+| INTJ-03 | Phase 6 | Pending |
+| INTJ-04 | Phase 6 | Pending |
+| HLTH-01 | Phase 6 | Pending |
+| HLTH-02 | Phase 6 | Pending |
+| HLTH-03 | Phase 6 | Pending |
+| HLTH-04 | Phase 6 | Pending |
+| DASH-01 | Phase 6 | Pending |
+| DASH-02 | Phase 6 | Pending |
+| DASH-03 | Phase 6 | Pending |
+| DASH-04 | Phase 6 | Pending |
+| STAT-01 | Phase 6 | Pending |
+| STAT-02 | Phase 6 | Pending |
+| STAT-03 | Phase 6 | Pending |
+| STAT-04 | Phase 6 | Pending |
+| REPT-01 | Phase 7 | Pending |
+| REPT-02 | Phase 7 | Pending |
+| REPT-03 | Phase 7 | Pending |
+| REPT-04 | Phase 7 | Pending |
+| STNG-01 | Phase 7 | Pending |
+| STNG-02 | Phase 7 | Pending |
+| STNG-03 | Phase 7 | Pending |
+| STNG-04 | Phase 7 | Pending |
+| STNG-05 | Phase 7 | Pending |
 | MNTZ-01 | Phase 7 | Pending |
 | MNTZ-02 | Phase 7 | Pending |
 | MNTZ-03 | Phase 7 | Pending |
@@ -209,10 +209,10 @@ Requirements for initial release. Each maps to roadmap phases.
 | MNTZ-06 | Phase 7 | Pending |
 
 **Coverage:**
-- v1 requirements: 57 total
-- Mapped to phases: 57
-- Unmapped: 0 ✓
+- v1 requirements: 64 total
+- Mapped to phases: 64
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-25*
-*Last updated: 2026-02-25 after initial definition*
+*Last updated: 2026-02-25 after roadmap creation*
