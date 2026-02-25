@@ -320,13 +320,13 @@ class PaywallScreen extends ConsumerWidget {
                       height: 24,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        color: Colors.white,
+                        color: AppColors.textInverse,
                       ),
                     )
                   : Text(
                       'Start 7-Day Free Trial',
                       style: AppTextStyles.labelLarge
-                          .copyWith(color: Colors.white, fontSize: 18),
+                          .copyWith(color: AppColors.textInverse, fontSize: 18),
                     ),
             ),
           ),

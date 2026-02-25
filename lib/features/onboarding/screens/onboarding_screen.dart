@@ -164,6 +164,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         child: ElevatedButton(
                           onPressed: isLastPage ? _complete : _nextPage,
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: AppColors.textInverse,
                             padding: const EdgeInsets.symmetric(
                               vertical: AppSpacing.lg,
                             ),
@@ -174,7 +176,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                                 : isLastPage
                                     ? 'Start Your Journey'
                                     : 'Next',
-                            style: AppTextStyles.labelLarge,
+                            style: AppTextStyles.labelLarge.copyWith(
+                              color: AppColors.textInverse,
+                            ),
                           ),
                         ),
                       ),

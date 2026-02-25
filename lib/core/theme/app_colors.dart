@@ -3,22 +3,23 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  // Backgrounds
-  static const background = Color(0xFF0D0D0F);
-  static const surface = Color(0xFF1A1A1F);
-  static const card = Color(0xFF242429);
+  // Backgrounds: Clean, deep minimal dark mode
+  static const background = Color(0xFF000000); // Pure deep black
+  static const surface = Color(0xFF0E0E11); // Extremely dark, barely grey
+  static const card = Color(0xFF15151A); // Slightly raised card
 
-  // Brand
-  static const primary = Color(0xFF6C63FF);
-  static const secondary = Color(0xFF00D9A3);
-  static const error = Color(0xFFFF6B6B);
+  // Brand: Minimalist chic aesthetic
+  static const primary = Color(0xFFFAFAFA); // Crisp off-white for primary accents
+  static const secondary = Color(0xFF8A8A93); // Soft, muted tertiary color
+  static const error = Color(0xFFFF453A); // iOS-like crisp error red
 
   // Text
-  static const textPrimary = Color(0xFFFFFFFF);
-  static const textSecondary = Color(0xFF9898A0);
-  static const textHint = Color(0xFF5A5A65);
+  static const textPrimary = Color(0xFFFFFFFF); // High contrast text
+  static const textSecondary = Color(0xFF8A8A93); // Refined secondary text
+  static const textHint = Color(0xFF48484A); // Muted hint
+  static const textInverse = Color(0xFF000000); // For dark text on light elements
 
   // Utility
-  static const divider = Color(0xFF2A2A30);
-  static const shimmer = Color(0xFF2E2E35);
+  static const divider = Color(0xFF232326); // Subtle borders
+  static const shimmer = Color(0xFF1F1F24); // Shimmer matching card
 }

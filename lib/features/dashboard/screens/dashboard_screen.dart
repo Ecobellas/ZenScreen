@@ -152,7 +152,7 @@ class DashboardScreen extends ConsumerWidget {
                     label: const Text('Strict Mode'),
                     style: FilledButton.styleFrom(
                       backgroundColor: AppColors.primary,
-                      foregroundColor: AppColors.textPrimary,
+                      foregroundColor: AppColors.textInverse,
                       padding: const EdgeInsets.symmetric(
                         vertical: AppSpacing.md,
                       ),

@@ -141,7 +141,7 @@ class _ActionButtons extends StatelessWidget {
               backgroundColor:
                   isCompleted ? AppColors.primary : AppColors.card,
               foregroundColor: isCompleted
-                  ? AppColors.textPrimary
+                  ? AppColors.textInverse
                   : AppColors.textHint,
               disabledBackgroundColor: AppColors.card,
               disabledForegroundColor: AppColors.textHint,
@@ -152,7 +152,7 @@ class _ActionButtons extends StatelessWidget {
             ),
             child: Text('Open Anyway', style: AppTextStyles.labelLarge.copyWith(
               color: isCompleted
-                  ? AppColors.textPrimary
+                  ? AppColors.textInverse
                   : AppColors.textHint,
             )),
           ),
