@@ -72,4 +72,36 @@ class DatabaseHelper {
       )
     ''');
   }
+
+  /// Insert a new app group and return its ID.
+  Future<int> insertAppGroup({
+    required String name,
+    String icon = 'apps',
+    int frictionType = 0,
+    int dailyLimitMinutes = 60,
+    bool isStrictMode = false,
+  }) async {
+    final db = await database;
+    return db.insert('app_groups', {
+      'name': name,
+      'icon': icon,
+      'friction_type': frictionType,
+      'daily_limit_minutes': dailyLimitMinutes,
+      'is_strict_mode': isStrictMode ? 1 : 0,
+    });
+  }
+
+  /// Insert a blocked app into a group.
+  Future<int> insertBlockedApp({
+    required int groupId,
+    required String packageName,
+    required String appName,
+  }) async {
+    final db = await database;
+    return db.insert('blocked_apps', {
+      'group_id': groupId,
+      'package_name': packageName,
+      'app_name': appName,
+    });
+  }
 }
