@@ -10,6 +10,8 @@ import '../../features/friction/screens/friction_overlay_screen.dart';
 import '../../features/shell/shell_screen.dart';
 import '../../features/dashboard/screens/dashboard_screen.dart';
 import '../../features/statistics/screens/statistics_screen.dart';
+import '../../features/statistics/screens/journal_screen.dart';
+import '../../features/statistics/screens/app_detail_screen.dart';
 import '../../features/settings/screens/settings_screen.dart';
 import '../../features/onboarding/screens/onboarding_screen.dart';
 import '../providers/providers.dart';
@@ -94,16 +96,12 @@ final routerProvider = Provider<GoRouter>((ref) {
                 routes: [
                   GoRoute(
                     path: 'journal',
-                    builder: (context, state) => const Scaffold(
-                      body: Center(child: Text('Intention Journal')),
-                    ),
+                    builder: (context, state) => const JournalScreen(),
                   ),
                   GoRoute(
                     path: 'app/:id',
-                    builder: (context, state) => Scaffold(
-                      body: Center(
-                          child: Text(
-                              'App Detail: ${state.pathParameters['id']}')),
+                    builder: (context, state) => AppDetailScreen(
+                      appPackage: state.pathParameters['id'] ?? '',
                     ),
                   ),
                 ],
