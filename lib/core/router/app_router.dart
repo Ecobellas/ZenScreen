@@ -7,6 +7,8 @@ import '../../features/blocking/screens/group_edit_screen.dart';
 import '../../features/blocking/screens/strict_mode_screen.dart';
 import '../../features/blocking/screens/time_profiles_screen.dart';
 import '../../features/friction/screens/friction_overlay_screen.dart';
+import '../../features/monetization/screens/paywall_screen.dart';
+import '../../features/reports/screens/report_screen.dart';
 import '../../features/shell/shell_screen.dart';
 import '../../features/dashboard/screens/dashboard_screen.dart';
 import '../../features/statistics/screens/statistics_screen.dart';
@@ -43,9 +45,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/report',
         parentNavigatorKey: rootNavigatorKey,
-        builder: (context, state) => const Scaffold(
-          body: Center(child: Text('Weekly Report')),
-        ),
+        builder: (context, state) => const ReportScreen(),
       ),
       GoRoute(
         path: '/friction',
@@ -139,9 +139,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                   ),
                   GoRoute(
                     path: 'paywall',
-                    builder: (context, state) => const Scaffold(
-                      body: Center(child: Text('Premium')),
-                    ),
+                    builder: (context, state) => const PaywallScreen(),
                   ),
                 ],
               ),

@@ -4,6 +4,7 @@ import '../../../core/database/database_helper.dart';
 import '../../../core/models/app_group.dart';
 import '../../../core/models/enums.dart';
 import '../../../core/providers/providers.dart';
+import '../../monetization/models/premium_feature.dart';
 
 /// State holding loaded app groups and their member apps.
 class AppGroupState {
@@ -154,6 +155,12 @@ class AppGroupNotifier extends StateNotifier<AppGroupState> {
   Future<void> deleteGroup(int groupId) async {
     await _db.deleteAppGroup(groupId);
     await loadGroups();
+  }
+
+  /// Checks whether adding another app would exceed the free tier limit (MNTZ-04).
+  /// Returns true if the user needs premium to add more apps.
+  bool needsPremiumForNewApp() {
+    return totalAppCount >= FreeTierLimits.maxApps;
   }
 
   /// Adds an app to a group.

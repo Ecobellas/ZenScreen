@@ -93,6 +93,10 @@ class StrictModeNotifier extends StateNotifier<StrictModeState> {
   /// Whether strict mode is currently in effect.
   bool isStrictModeActive() => state.config.isCurrentlyActive();
 
+  /// Checks whether activating Strict Mode requires premium (MNTZ-04).
+  /// Strict Mode is a premium-only feature.
+  bool get needsPremium => true;
+
   /// Activates Strict Mode for a one-off period (STRK-01).
   ///
   /// The [endTime] determines when it will auto-deactivate.

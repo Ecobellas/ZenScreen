@@ -126,6 +126,12 @@ class FrictionSettingsNotifier extends StateNotifier<FrictionSettings> {
     await _prefs.setPreferredFriction(type);
     state = state.copyWith(defaultFrictionType: type);
   }
+
+  /// Checks whether a friction type requires premium (MNTZ-04).
+  /// Breath and intention friction types require premium.
+  bool needsPremiumForFrictionType(FrictionType type) {
+    return type == FrictionType.breath || type == FrictionType.intention;
+  }
 }
 
 /// Global provider for friction settings.

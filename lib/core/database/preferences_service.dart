@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/enums.dart';
 
@@ -40,4 +41,30 @@ class PreferencesService {
       _prefs.getBool('escalation_enabled') ?? true;
   Future<void> setEscalationEnabled(bool v) =>
       _prefs.setBool('escalation_enabled', v);
+
+  // Theme mode (STNG-01)
+  ThemeMode get themeMode {
+    final index = _prefs.getInt('theme_mode') ?? 0; // 0=dark, 1=light
+    return index == 1 ? ThemeMode.light : ThemeMode.dark;
+  }
+
+  Future<void> setThemeMode(ThemeMode mode) =>
+      _prefs.setInt('theme_mode', mode == ThemeMode.light ? 1 : 0);
+
+  // Notifications (STNG-01)
+  bool get notificationsEnabled =>
+      _prefs.getBool('notifications_enabled') ?? true;
+  Future<void> setNotificationsEnabled(bool v) =>
+      _prefs.setBool('notifications_enabled', v);
+
+  // Trial start date (MNTZ-05)
+  DateTime? get trialStartDate {
+    final str = _prefs.getString('trial_start_date');
+    return str != null ? DateTime.tryParse(str) : null;
+  }
+
+  Future<void> setTrialStartDate(DateTime date) =>
+      _prefs.setString('trial_start_date', date.toIso8601String());
+
+  Future<void> clearTrialStartDate() => _prefs.remove('trial_start_date');
 }
