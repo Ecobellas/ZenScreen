@@ -139,9 +139,9 @@ class _ActionButtons extends StatelessWidget {
             onPressed: isCompleted ? onOpenAnyway : null,
             style: ElevatedButton.styleFrom(
               backgroundColor:
-                  isCompleted ? AppColors.primary : AppColors.card,
+                  isCompleted ? AppColors.textPrimary : AppColors.card,
               foregroundColor: isCompleted
-                  ? AppColors.textInverse
+                  ? AppColors.background
                   : AppColors.textHint,
               disabledBackgroundColor: AppColors.card,
               disabledForegroundColor: AppColors.textHint,
@@ -152,7 +152,7 @@ class _ActionButtons extends StatelessWidget {
             ),
             child: Text('Open Anyway', style: AppTextStyles.labelLarge.copyWith(
               color: isCompleted
-                  ? AppColors.textInverse
+                  ? AppColors.background
                   : AppColors.textHint,
             )),
           ),

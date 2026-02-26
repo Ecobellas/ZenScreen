@@ -24,30 +24,38 @@ class SummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(AppSpacing.lg),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         decoration: BoxDecoration(
           color: AppColors.card,
-          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+          border: Border.all(color: AppColors.divider),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(
               icon,
               color: iconColor ?? AppColors.primary,
-              size: 20,
+              size: 24,
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
               value,
-              style: AppTextStyles.metricMedium,
+              style: AppTextStyles.metricMedium.copyWith(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: AppSpacing.xs),
+            const SizedBox(height: 4),
             Text(
-              label,
-              style: AppTextStyles.bodySmall,
+              label.toUpperCase(),
+              style: AppTextStyles.labelSmall.copyWith(
+                fontSize: 10,
+                letterSpacing: 0.5,
+                color: AppColors.textSecondary,
+              ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

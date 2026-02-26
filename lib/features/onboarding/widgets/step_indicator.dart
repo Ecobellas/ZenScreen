@@ -22,12 +22,12 @@ class StepIndicator extends StatelessWidget {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-          margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
-          width: isActive ? 24 : 8,
+          margin: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+          width: 8,
           height: 8,
           decoration: BoxDecoration(
-            color: isActive ? AppColors.primary : AppColors.card,
-            borderRadius: BorderRadius.circular(AppSpacing.xs),
+            color: isActive ? AppColors.textPrimary : AppColors.card,
+            shape: BoxShape.circle,
           ),
         );
       }),

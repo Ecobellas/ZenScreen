@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Strict Mode Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1717cf",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111121",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col antialiased selection:bg-primary/30 selection:text-white">
+<!-- Top App Bar -->
+<header class="flex items-center p-4 pb-2 justify-between bg-transparent sticky top-0 z-10 backdrop-blur-md">
+<button class="text-slate-900 dark:text-white flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-12">Strict Mode</h2>
+</header>
+<main class="flex-1 overflow-y-auto px-4 pb-24">
+<!-- Status Card -->
+<div class="mt-4 mb-8">
+<div class="flex items-stretch justify-between gap-4 rounded-lg bg-white dark:bg-[#1a1a2e] border border-slate-200 dark:border-white/5 p-4 shadow-sm">
+<div class="flex flex-col gap-1 flex-[2_2_0px] justify-center">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-slate-500"></span>
+</span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Status: Inactive</p>
+</div>
+<p class="text-slate-900 dark:text-white text-base font-medium leading-normal mt-1">Strict mode is currently off</p>
+</div>
+<div class="w-24 bg-center bg-no-repeat bg-cover rounded-lg shrink-0 aspect-square overflow-hidden relative shadow-inner" data-alt="Abstract minimalist zen stones or calm nature" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBzZBoXAPALorOR05GkckXvmsDkrvFRkgnNoIzNE1_EKXc7FRCdnCxfdpII0W7P6nnCfJPPcgt3jwzHBeu0PrOhnQ7rxi1I1DeNG6IXlGJoiR9Z5LhLpBVU3SQ2BY3j8PQYEj-WgaYO2Q7Lq6A_Qt_G2XuzsS-B6qsBW3l6TisE4ICIrCCcEveu7TUbWbXt9eyfQ9QrE9YRHmjyBCsVN4Z30cW-rr6LH7Qd-C0wfGQGKQJ8usg8ZD2xFw8fXVLJfprKzgxbu2R4OgmI");'>
+<div class="absolute inset-0 bg-slate-900/20"></div>
+</div>
+</div>
+</div>
+<h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight mb-6">Recurring Schedule</h3>
+<!-- Day Selector -->
+<div class="mb-8">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-4 px-1">Active Days</p>
+<div class="flex justify-between items-center gap-2">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold border border-slate-300 dark:border-white/20 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 transition-all">M</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold bg-primary text-white border border-primary shadow-lg shadow-primary/20 transition-all">T</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold bg-primary text-white border border-primary shadow-lg shadow-primary/20 transition-all">W</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold bg-primary text-white border border-primary shadow-lg shadow-primary/20 transition-all">T</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold bg-primary text-white border border-primary shadow-lg shadow-primary/20 transition-all">F</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold border border-slate-300 dark:border-white/20 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 transition-all">S</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold border border-slate-300 dark:border-white/20 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 transition-all">S</button>
+</div>
+</div>
+<!-- Start Time Picker -->
+<div class="mb-6">
+<div class="flex justify-between items-baseline mb-3 px-1">
+<p class="text-slate-900 dark:text-white text-base font-semibold">Start Time</p>
+</div>
+<div class="flex gap-3">
+<!-- Hour -->
+<div class="flex grow flex-col items-center gap-2">
+<div class="flex h-16 w-full items-center justify-center rounded-lg bg-slate-100 dark:bg-[#1f1f35] border border-slate-200 dark:border-white/5 relative overflow-hidden group cursor-pointer">
+<p class="text-slate-900 dark:text-white text-2xl font-bold z-10">09</p>
+<div class="absolute inset-0 bg-primary/5 dark:bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<span class="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-wider">Hour</span>
+</div>
+<div class="flex items-center h-16 pt-0 pb-4">
+<span class="text-slate-300 dark:text-slate-600 text-2xl font-bold">:</span>
+</div>
+<!-- Minute -->
+<div class="flex grow flex-col items-center gap-2">
+<div class="flex h-16 w-full items-center justify-center rounded-lg bg-slate-100 dark:bg-[#1f1f35] border border-slate-200 dark:border-white/5 relative overflow-hidden group cursor-pointer">
+<p class="text-slate-900 dark:text-white text-2xl font-bold z-10">00</p>
+<div class="absolute inset-0 bg-primary/5 dark:bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<span class="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-wider">Minute</span>
+</div>
+<!-- AM/PM -->
+<div class="flex grow flex-col items-center gap-2">
+<div class="flex h-16 w-full items-center justify-center rounded-lg bg-slate-200 dark:bg-[#2d2d48] border border-slate-300 dark:border-white/10 cursor-pointer">
+<p class="text-slate-900 dark:text-white text-lg font-bold">AM</p>
+</div>
+<span class="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-wider">Format</span>
+</div>
+</div>
+</div>
+<!-- End Time Picker -->
+<div class="mb-8">
+<div class="flex justify-between items-baseline mb-3 px-1">
+<p class="text-slate-900 dark:text-white text-base font-semibold">End Time</p>
+</div>
+<div class="flex gap-3">
+<!-- Hour -->
+<div class="flex grow flex-col items-center gap-2">
+<div class="flex h-16 w-full items-center justify-center rounded-lg bg-slate-100 dark:bg-[#1f1f35] border border-slate-200 dark:border-white/5 relative overflow-hidden group cursor-pointer">
+<p class="text-slate-900 dark:text-white text-2xl font-bold z-10">05</p>
+<div class="absolute inset-0 bg-primary/5 dark:bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<span class="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-wider">Hour</span>
+</div>
+<div class="flex items-center h-16 pt-0 pb-4">
+<span class="text-slate-300 dark:text-slate-600 text-2xl font-bold">:</span>
+</div>
+<!-- Minute -->
+<div class="flex grow flex-col items-center gap-2">
+<div class="flex h-16 w-full items-center justify-center rounded-lg bg-slate-100 dark:bg-[#1f1f35] border border-slate-200 dark:border-white/5 relative overflow-hidden group cursor-pointer">
+<p class="text-slate-900 dark:text-white text-2xl font-bold z-10">30</p>
+<div class="absolute inset-0 bg-primary/5 dark:bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<span class="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-wider">Minute</span>
+</div>
+<!-- AM/PM -->
+<div class="flex grow flex-col items-center gap-2">
+<div class="flex h-16 w-full items-center justify-center rounded-lg bg-slate-200 dark:bg-[#2d2d48] border border-slate-300 dark:border-white/10 cursor-pointer">
+<p class="text-slate-900 dark:text-white text-lg font-bold">PM</p>
+</div>
+<span class="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-wider">Format</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Action Button -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background-light dark:from-background-dark via-background-light dark:via-background-dark to-transparent">
+<button class="w-full bg-slate-900 dark:bg-white text-white dark:text-black font-bold h-14 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-lg">
+<span class="material-symbols-outlined">bolt</span>
+            Activate Strict Mode
+        </button>
+</div>
+</body></html>

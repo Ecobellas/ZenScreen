@@ -19,7 +19,7 @@ class AppTheme {
           color: AppColors.card,
           elevation: 0, // Flat cards
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
             side: const BorderSide(color: AppColors.divider, width: 1), // Subtle crisp border
           ),
         ),
@@ -42,7 +42,7 @@ class AppTheme {
             backgroundColor: AppColors.primary,
             foregroundColor: AppColors.textInverse, // Ensure dark text on light buttons
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppSpacing.radiusXl), // Pill shape
+              borderRadius: BorderRadius.circular(AppSpacing.radiusMd), // 8px shape
             ),
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             elevation: 0, // Flat design

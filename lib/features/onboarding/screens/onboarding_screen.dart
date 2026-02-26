@@ -133,56 +133,33 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 children: [
                   StepIndicator(currentStep: currentPage),
                   const SizedBox(height: AppSpacing.xl),
-                  Row(
-                    children: [
-                      // Back button
-                      if (!isFirstPage)
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: _prevPage,
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: AppColors.textPrimary,
-                              side: const BorderSide(color: AppColors.divider),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  AppSpacing.radiusMd,
-                                ),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                vertical: AppSpacing.lg,
-                              ),
-                            ),
-                            child: const Text('Back'),
-                          ),
-                        )
-                      else
-                        const Spacer(),
-                      const SizedBox(width: AppSpacing.md),
-                      // Next / Get Started / Complete button
-                      Expanded(
-                        flex: 2,
-                        child: ElevatedButton(
-                          onPressed: isLastPage ? _complete : _nextPage,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: AppColors.textInverse,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: AppSpacing.lg,
-                            ),
-                          ),
-                          child: Text(
-                            isFirstPage
-                                ? 'Get Started'
-                                : isLastPage
-                                    ? 'Start Your Journey'
-                                    : 'Next',
-                            style: AppTextStyles.labelLarge.copyWith(
-                              color: AppColors.textInverse,
-                            ),
-                          ),
+                  // Full-width high-contrast 'Get Started' button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: isLastPage ? _complete : _nextPage,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.textPrimary,
+                        foregroundColor: AppColors.background,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: AppSpacing.lg,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(AppSpacing.radiusMd),
                         ),
                       ),
-                    ],
+                      child: Text(
+                        isFirstPage
+                            ? 'Get Started'
+                            : isLastPage
+                                ? 'Start Your Journey'
+                                : 'Next',
+                        style: AppTextStyles.labelLarge.copyWith(
+                          color: AppColors.background,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

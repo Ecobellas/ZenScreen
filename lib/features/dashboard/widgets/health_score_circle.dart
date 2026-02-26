@@ -70,16 +70,11 @@ class _HealthScoreCircleState extends State<HealthScoreCircle>
   }
 
   Color get _scoreColor {
-    if (widget.score >= 80) return AppColors.secondary;
     if (widget.score >= 50) return AppColors.primary;
     return AppColors.error;
   }
 
-  String get _emoji {
-    if (widget.score >= 80) return '\u{1F60A}'; // happy
-    if (widget.score >= 50) return '\u{1F610}'; // neutral
-    return '\u{1F61E}'; // sad
-  }
+  // Emoji logic removed.
 
   @override
   Widget build(BuildContext context) {
@@ -123,13 +118,21 @@ class _HealthScoreCircleState extends State<HealthScoreCircle>
                   Text(
                     '${widget.score}',
                     style: AppTextStyles.metricLarge.copyWith(
-                      color: _scoreColor,
+                      color: AppColors.accentWhite,
+                      fontSize: 64, // 6xl
+                      fontWeight: FontWeight.w300,
+                      letterSpacing: -2,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xs),
+                  const SizedBox(height: 4),
                   Text(
-                    _emoji,
-                    style: const TextStyle(fontSize: 28),
+                    'HEALTH SCORE',
+                    style: AppTextStyles.labelSmall.copyWith(
+                      color: AppColors.primary,
+                      fontSize: 10, // xs
+                      letterSpacing: 1.5,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
@@ -157,13 +160,11 @@ class _ScoreArcPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = (size.width - 16) / 2;
-    const strokeWidth = 10.0;
-
     // Track (background ring).
     final trackPaint = Paint()
-      ..color = trackColor
+      ..color = AppColors.divider
       ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth
+      ..strokeWidth = 1.0
       ..strokeCap = StrokeCap.round;
 
     canvas.drawCircle(center, radius, trackPaint);
@@ -172,7 +173,7 @@ class _ScoreArcPainter extends CustomPainter {
     final progressPaint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth
+      ..strokeWidth = 2.0
       ..strokeCap = StrokeCap.round;
 
     const startAngle = -pi / 2; // Start from top.

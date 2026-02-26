@@ -9,10 +9,9 @@ class AppSpacing {
   static const double xxxl = 32;
   static const double huge = 48;
 
-  // Modern chic design favors either purely sharp, or very gentle squircle/pill radiuses.
-  // We'll use larger radiuses for an organic, friendly but minimal vibe.
-  static const double radiusSm = 12;
-  static const double radiusMd = 16;
-  static const double radiusLg = 24;
-  static const double radiusXl = 32; // Pill-shape / max rounded
+  // Space Grotesk minimal roundness. Everything is a subtle squircle.
+  static const double radiusSm = 4;
+  static const double radiusMd = 8;
+  static const double radiusLg = 12; // xl in tailwind
+  static const double radiusXl = 16; // 2xl in tailwind
 }

@@ -120,18 +120,8 @@ class _ScreenTimeChartState extends State<ScreenTimeChart> {
                         rightTitles: const AxisTitles(
                           sideTitles: SideTitles(showTitles: false),
                         ),
-                        leftTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            reservedSize: 30,
-                            getTitlesWidget: (value, meta) {
-                              if (value == 0) return const SizedBox.shrink();
-                              return Text(
-                                '${value.toInt()}h',
-                                style: AppTextStyles.bodySmall,
-                              );
-                            },
-                          ),
+                        leftTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
                         ),
                         bottomTitles: AxisTitles(
                           sideTitles: SideTitles(
@@ -153,15 +143,7 @@ class _ScreenTimeChartState extends State<ScreenTimeChart> {
                           ),
                         ),
                       ),
-                      gridData: FlGridData(
-                        show: true,
-                        drawVerticalLine: false,
-                        horizontalInterval: 1,
-                        getDrawingHorizontalLine: (value) => FlLine(
-                          color: AppColors.divider,
-                          strokeWidth: 0.5,
-                        ),
-                      ),
+                      gridData: const FlGridData(show: false),
                       borderData: FlBorderData(show: false),
                       barGroups: _data.asMap().entries.map((entry) {
                         final hours =

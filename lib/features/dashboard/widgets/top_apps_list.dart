@@ -80,44 +80,83 @@ class _AppUsageRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final progress = app.duration.inMinutes / maxMinutes;
-    // Color: error if approaching per-app limit (> 80% of daily goal / 3).
-    final perAppLimit = dailyGoalMinutes / 3;
-    final isHigh = app.duration.inMinutes > perAppLimit;
+    final progress = (app.duration.inMinutes / maxMinutes).clamp(0.0, 1.0);
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.md),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppSpacing.md),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: Text(
-                  app.appName,
-                  style: AppTextStyles.bodyLarge,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.apps_rounded,
+                    color: AppColors.primary,
+                  ),
                 ),
               ),
-              Text(
-                _formatDuration(app.duration),
-                style: AppTextStyles.metricSmall,
+              const SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    app.appName,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  Text(
+                    'Productivity', // Mock category
+                    style: AppTextStyles.bodySmall.copyWith(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.xs),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-            child: LinearProgressIndicator(
-              value: progress.clamp(0.0, 1.0),
-              minHeight: 6,
-              backgroundColor: AppColors.surface,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                isHigh ? AppColors.error : AppColors.primary,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                _formatDuration(app.duration),
+                style: AppTextStyles.bodyMedium.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
               ),
-            ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: 70,
+                height: 6,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(3),
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    backgroundColor: AppColors.divider,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      AppColors.primary,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

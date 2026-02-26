@@ -32,13 +32,13 @@ class WelcomeStep extends StatelessWidget {
           const SizedBox(height: AppSpacing.xxxl),
           // Title
           Text(
-            'ZenScreen',
+            'Reclaim Your Time',
             style: AppTextStyles.headingLarge.copyWith(fontSize: 36),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppSpacing.md),
           Text(
-            'Take back control of your screen time',
+            'Master your digital habits with conscious design.',
             style: AppTextStyles.bodyLarge.copyWith(
               color: AppColors.textSecondary,
             ),

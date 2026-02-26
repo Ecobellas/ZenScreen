@@ -32,28 +32,83 @@ class DashboardScreen extends ConsumerWidget {
     final prefs = ref.watch(preferencesServiceProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('ZenScreen', style: AppTextStyles.headingMedium),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          flexibleSpace: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(
+                          child: Icon(Icons.spa, color: AppColors.primary),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'ZenScreen',
+                        style: AppTextStyles.headingMedium.copyWith(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.transparent,
+                    ),
+                    child: IconButton(
+                      icon: Icon(Icons.settings, color: AppColors.textSecondary),
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: AppSpacing.lg),
+            const SizedBox(height: AppSpacing.md),
 
             // --- Health Score Circle (DASH-01, HLTH-02) ---
             scoreAsync.when(
               data: (score) => Column(
                 children: [
                   HealthScoreCircle(score: score),
-                  const SizedBox(height: AppSpacing.sm),
-                  Text('Digital Health Score',
-                      style: AppTextStyles.labelLarge),
-                  const SizedBox(height: AppSpacing.xs),
-                  Text('Today', style: AppTextStyles.bodyMedium),
+                  const SizedBox(height: 24),
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: 240),
+                    child: Text(
+                      'You\'re in the top 15% of mindful users today. Keep it up.',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textSecondary,
+                        fontSize: 14,
+                        height: 1.5,
+                      ),
+                    ),
+                  ),
                 ],
               ),
               loading: () => const SizedBox(
@@ -77,24 +132,24 @@ class DashboardScreen extends ConsumerWidget {
                 return Row(
                   children: [
                     SummaryCard(
-                      icon: Icons.access_time_rounded,
+                      icon: Icons.timer,
                       value: _formatScreenTime(screenTime),
                       label: 'Screen Time',
                       iconColor: AppColors.primary,
                     ),
-                    const SizedBox(width: AppSpacing.md),
+                    const SizedBox(width: 12),
                     SummaryCard(
-                      icon: Icons.touch_app_rounded,
+                      icon: Icons.lock_open,
                       value: '$appOpens',
-                      label: 'App Opens',
-                      iconColor: AppColors.secondary,
+                      label: 'Pickups',
+                      iconColor: Colors.purple[400],
                     ),
-                    const SizedBox(width: AppSpacing.md),
+                    const SizedBox(width: 12),
                     SummaryCard(
-                      icon: Icons.shield_outlined,
+                      icon: Icons.check_circle,
                       value: '$frictionDismissals',
-                      label: 'Dismissed',
-                      iconColor: AppColors.error,
+                      label: 'Dismissals',
+                      iconColor: Colors.tealAccent[400],
                     ),
                   ],
                 );
@@ -148,37 +203,38 @@ class DashboardScreen extends ConsumerWidget {
                         );
                       }
                     },
-                    icon: const Icon(Icons.lock_outline, size: 18),
+                    icon: const Icon(Icons.bolt, size: 20),
                     label: const Text('Strict Mode'),
                     style: FilledButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: AppColors.textInverse,
+                      backgroundColor: AppColors.accentWhite,
+                      foregroundColor: Colors.black,
                       padding: const EdgeInsets.symmetric(
-                        vertical: AppSpacing.md,
+                        vertical: 18,
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(AppSpacing.radiusMd),
+                        borderRadius: BorderRadius.circular(16),
                       ),
+                      textStyle: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
-                const SizedBox(width: AppSpacing.md),
+                const SizedBox(width: 16),
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: () => context.go('/statistics'),
-                    icon: const Icon(Icons.bar_chart_rounded, size: 18),
+                    icon: const Icon(Icons.bar_chart_rounded, size: 20),
                     label: const Text('View Report'),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.textPrimary,
-                      side: const BorderSide(color: AppColors.primary),
+                      foregroundColor: AppColors.accentWhite,
+                      side: const BorderSide(color: Color(0xFF334155)), // slate-700
                       padding: const EdgeInsets.symmetric(
-                        vertical: AppSpacing.md,
+                        vertical: 18,
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(AppSpacing.radiusMd),
+                        borderRadius: BorderRadius.circular(16),
                       ),
+                      textStyle: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.bold),
+                      backgroundColor: AppColors.card,
                     ),
                   ),
                 ),

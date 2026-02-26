@@ -311,14 +311,12 @@ class _StatusCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.xxl),
       decoration: BoxDecoration(
-        color: isActive
-            ? AppColors.error.withValues(alpha: 0.15)
-            : AppColors.secondary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
         border: Border.all(
           color: isActive
-              ? AppColors.error.withValues(alpha: 0.4)
-              : AppColors.secondary.withValues(alpha: 0.3),
+              ? AppColors.error
+              : AppColors.divider,
         ),
       ),
       child: Row(
@@ -366,16 +364,17 @@ class _ActivateButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.error,
+          backgroundColor: AppColors.textPrimary,
+          foregroundColor: AppColors.background,
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           ),
         ),
-        icon: const Icon(Icons.shield, color: AppColors.textPrimary),
+        icon: const Icon(Icons.shield, color: AppColors.background),
         label: Text('Activate Strict Mode',
             style: AppTextStyles.labelLarge
-                .copyWith(color: AppColors.textPrimary)),
+                .copyWith(color: AppColors.background)),
         onPressed: onActivate,
       ),
     );
@@ -562,18 +561,27 @@ class _DayChips extends StatelessWidget {
             }
             onChanged(updated);
           },
-          child: CircleAvatar(
-            radius: 16,
-            backgroundColor:
-                selected ? AppColors.primary : AppColors.card,
-            child: Text(
-              _labels[i],
-              style: AppTextStyles.bodySmall.copyWith(
-                color: selected
-                    ? AppColors.textPrimary
-                    : AppColors.textHint,
-                fontWeight:
-                    selected ? FontWeight.w600 : FontWeight.normal,
+          child: Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.card,
+              border: Border.all(
+                color: selected ? AppColors.textPrimary : Colors.transparent,
+                width: 1,
+              ),
+            ),
+            child: Center(
+              child: Text(
+                _labels[i],
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: selected
+                      ? AppColors.textPrimary
+                      : AppColors.textHint,
+                  fontWeight:
+                      selected ? FontWeight.w600 : FontWeight.normal,
+                ),
               ),
             ),
           ),

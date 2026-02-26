@@ -26,12 +26,7 @@ class WaitTimerOverlay extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          'Take a moment...',
-          style: AppTextStyles.headingMedium.copyWith(
-            color: AppColors.textPrimary,
-          ),
-        ),
+        // The 'Take a moment' text was removed in the new design.
         const SizedBox(height: AppSpacing.huge),
 
         // Circular countdown timer.
@@ -42,9 +37,9 @@ class WaitTimerOverlay extends ConsumerWidget {
             painter: _CountdownRingPainter(progress: progress),
             child: Center(
               child: Text(
-                '$remaining',
+                '${remaining}s',
                 style: AppTextStyles.metricLarge.copyWith(
-                  color: AppColors.primary,
+                  color: AppColors.textPrimary,
                 ),
               ),
             ),
@@ -52,18 +47,13 @@ class WaitTimerOverlay extends ConsumerWidget {
         ),
         const SizedBox(height: AppSpacing.xxl),
 
-        if (friction.isCompleted)
-          Text(
-            'You may proceed',
-            style: AppTextStyles.bodyLarge.copyWith(
-              color: AppColors.secondary,
-            ),
-          )
-        else
-          Text(
-            'Wait before proceeding',
-            style: AppTextStyles.bodyMedium,
+        Text(
+          'Is this app truly necessary right now?',
+          style: AppTextStyles.bodyLarge.copyWith(
+            color: AppColors.textSecondary,
           ),
+          textAlign: TextAlign.center,
+        ),
       ],
     );
   }
@@ -84,7 +74,7 @@ class _CountdownRingPainter extends CustomPainter {
     final bgPaint = Paint()
       ..color = AppColors.card
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 6
+      ..strokeWidth = 2
       ..strokeCap = StrokeCap.round;
 
     canvas.drawCircle(center, radius, bgPaint);
@@ -93,7 +83,7 @@ class _CountdownRingPainter extends CustomPainter {
     final fgPaint = Paint()
       ..color = AppColors.primary
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 6
+      ..strokeWidth = 2
       ..strokeCap = StrokeCap.round;
 
     final sweepAngle = 2 * math.pi * progress;
