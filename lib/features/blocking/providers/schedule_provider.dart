@@ -38,10 +38,20 @@ class ScheduleNotifier extends StateNotifier<ScheduleState> {
 
   /// Loads all schedules from the database.
   Future<void> loadSchedules() async {
+    if (_db.isStub) {
+      state = const ScheduleState(isLoading: false);
+      return;
+    }
+
     state = state.copyWith(isLoading: true);
-    final rows = await _db.getBlockingSchedules();
-    final schedules = rows.map((r) => BlockingSchedule.fromMap(r)).toList();
-    state = ScheduleState(schedules: schedules, isLoading: false);
+
+    try {
+      final rows = await _db.getBlockingSchedules();
+      final schedules = rows.map((r) => BlockingSchedule.fromMap(r)).toList();
+      state = ScheduleState(schedules: schedules, isLoading: false);
+    } catch (_) {
+      state = const ScheduleState(isLoading: false);
+    }
   }
 
   /// Creates a new blocking schedule.
@@ -52,6 +62,7 @@ class ScheduleNotifier extends StateNotifier<ScheduleState> {
     List<int> daysOfWeek = const [1, 2, 3, 4, 5, 6, 7],
     bool isActive = true,
   }) async {
+    if (_db.isStub) return -1;
     final schedule = BlockingSchedule(
       groupId: groupId,
       startTime: startTime,
@@ -66,19 +77,21 @@ class ScheduleNotifier extends StateNotifier<ScheduleState> {
 
   /// Updates an existing schedule.
   Future<void> updateSchedule(BlockingSchedule schedule) async {
-    if (schedule.id == null) return;
+    if (_db.isStub || schedule.id == null) return;
     await _db.updateBlockingSchedule(schedule.id!, schedule.toMap());
     await loadSchedules();
   }
 
   /// Deletes a schedule.
   Future<void> deleteSchedule(int id) async {
+    if (_db.isStub) return;
     await _db.deleteBlockingSchedule(id);
     await loadSchedules();
   }
 
   /// Toggles a schedule's active state.
   Future<void> toggleSchedule(int id) async {
+    if (_db.isStub) return;
     final schedule = state.schedules.firstWhere((s) => s.id == id);
     await updateSchedule(schedule.copyWith(isActive: !schedule.isActive));
   }

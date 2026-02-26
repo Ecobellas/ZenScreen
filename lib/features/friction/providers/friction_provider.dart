@@ -279,6 +279,8 @@ class FrictionNotifier extends StateNotifier<FrictionState> {
 
   /// Logs a friction event to the database.
   Future<void> _logFrictionEvent(FrictionAction action) async {
+    if (_db.isStub) return;
+
     final duration = state.startedAt != null
         ? DateTime.now().difference(state.startedAt!).inSeconds
         : 0;
@@ -312,6 +314,7 @@ class FrictionNotifier extends StateNotifier<FrictionState> {
 
   /// Increments a counter column in the daily_stats row for today.
   Future<void> _incrementDailyStat(String column) async {
+    if (_db.isStub) return;
     final db = await _db.database;
     final today = DateTime.now().toIso8601String().substring(0, 10);
 

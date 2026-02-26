@@ -68,39 +68,49 @@ class AppGroupNotifier extends StateNotifier<AppGroupState> {
 
   /// Loads all groups from the database, creating presets if needed.
   Future<void> loadGroups() async {
-    state = state.copyWith(isLoading: true);
-
-    // Ensure preset groups exist.
-    await _ensurePresetGroups();
-
-    final rows = await _db.getAppGroups();
-    final groups = rows.map((r) => AppGroup.fromMap(r)).toList();
-
-    // Load apps for each group.
-    final groupApps = <int, List<BlockedAppEntry>>{};
-    for (final group in groups) {
-      if (group.id != null) {
-        final appRows = await _db.getBlockedApps(group.id!);
-        groupApps[group.id!] = appRows
-            .map((r) => BlockedAppEntry(
-                  id: r['id'] as int?,
-                  groupId: r['group_id'] as int,
-                  packageName: r['package_name'] as String,
-                  appName: r['app_name'] as String,
-                ))
-            .toList();
-      }
+    if (_db.isStub) {
+      state = const AppGroupState(isLoading: false);
+      return;
     }
 
-    state = AppGroupState(
-      groups: groups,
-      groupApps: groupApps,
-      isLoading: false,
-    );
+    state = state.copyWith(isLoading: true);
+
+    try {
+      // Ensure preset groups exist.
+      await _ensurePresetGroups();
+
+      final rows = await _db.getAppGroups();
+      final groups = rows.map((r) => AppGroup.fromMap(r)).toList();
+
+      // Load apps for each group.
+      final groupApps = <int, List<BlockedAppEntry>>{};
+      for (final group in groups) {
+        if (group.id != null) {
+          final appRows = await _db.getBlockedApps(group.id!);
+          groupApps[group.id!] = appRows
+              .map((r) => BlockedAppEntry(
+                    id: r['id'] as int?,
+                    groupId: r['group_id'] as int,
+                    packageName: r['package_name'] as String,
+                    appName: r['app_name'] as String,
+                  ))
+              .toList();
+        }
+      }
+
+      state = AppGroupState(
+        groups: groups,
+        groupApps: groupApps,
+        isLoading: false,
+      );
+    } catch (_) {
+      state = const AppGroupState(isLoading: false);
+    }
   }
 
   /// Creates preset groups if they don't already exist.
   Future<void> _ensurePresetGroups() async {
+    if (_db.isStub) return;
     final existing = await _db.getAppGroups();
     final existingNames = existing.map((r) => r['name'] as String).toSet();
 
@@ -118,6 +128,7 @@ class AppGroupNotifier extends StateNotifier<AppGroupState> {
     FrictionType frictionType = FrictionType.wait,
     int dailyLimitMinutes = 60,
   }) async {
+    if (_db.isStub) return -1;
     final id = await _db.insertAppGroup(
       name: name,
       icon: icon,
@@ -136,6 +147,7 @@ class AppGroupNotifier extends StateNotifier<AppGroupState> {
     int? dailyLimitMinutes,
     bool? isStrictMode,
   }) async {
+    if (_db.isStub) return;
     final values = <String, dynamic>{};
     if (name != null) values['name'] = name;
     if (icon != null) values['icon'] = icon;
@@ -153,6 +165,7 @@ class AppGroupNotifier extends StateNotifier<AppGroupState> {
 
   /// Deletes an app group.
   Future<void> deleteGroup(int groupId) async {
+    if (_db.isStub) return;
     await _db.deleteAppGroup(groupId);
     await loadGroups();
   }
@@ -169,6 +182,7 @@ class AppGroupNotifier extends StateNotifier<AppGroupState> {
     required String packageName,
     required String appName,
   }) async {
+    if (_db.isStub) return;
     await _db.insertBlockedApp(
       groupId: groupId,
       packageName: packageName,
@@ -182,6 +196,7 @@ class AppGroupNotifier extends StateNotifier<AppGroupState> {
     required int groupId,
     required String packageName,
   }) async {
+    if (_db.isStub) return;
     await _db.removeBlockedApp(groupId, packageName);
     await loadGroups();
   }

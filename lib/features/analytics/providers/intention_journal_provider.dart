@@ -34,6 +34,11 @@ class IntentionJournalNotifier extends StateNotifier<AsyncValue<void>> {
 
   /// Gets the intention breakdown for a specific date (for pie chart).
   Future<IntentionBreakdown> getDailyBreakdown(DateTime date) async {
+    final counts = <IntentionType, int>{
+      for (final type in IntentionType.values) type: 0,
+    };
+    if (_db.isStub) return IntentionBreakdown(date: date, counts: counts);
+
     final db = await _db.database;
     final dateStr = date.toIso8601String().substring(0, 10);
     final rows = await db.query(
@@ -42,9 +47,6 @@ class IntentionJournalNotifier extends StateNotifier<AsyncValue<void>> {
       whereArgs: ['$dateStr%'],
     );
 
-    final counts = <IntentionType, int>{
-      for (final type in IntentionType.values) type: 0,
-    };
     for (final row in rows) {
       final type = IntentionType.values[row['intention_type'] as int? ?? 0];
       counts[type] = (counts[type] ?? 0) + 1;
@@ -68,6 +70,7 @@ class IntentionJournalNotifier extends StateNotifier<AsyncValue<void>> {
   /// Generates insight text like:
   /// "This week you opened Instagram mostly out of Boredom (65%)"
   Future<String> getInsightText() async {
+    if (_db.isStub) return 'No intention data available on web.';
     final db = await _db.database;
     final now = DateTime.now();
     final weekAgo = DateTime(now.year, now.month, now.day - 7);
@@ -126,6 +129,7 @@ class IntentionJournalNotifier extends StateNotifier<AsyncValue<void>> {
     DateTime? startDate,
     DateTime? endDate,
   }) async {
+    if (_db.isStub) return [];
     final db = await _db.database;
 
     final where = <String>[];
@@ -161,6 +165,7 @@ class IntentionJournalNotifier extends StateNotifier<AsyncValue<void>> {
   /// Gets top apps by a specific intention type.
   Future<List<(String, int)>> getTopAppsByIntention(
       IntentionType type) async {
+    if (_db.isStub) return [];
     final db = await _db.database;
     final rows = await db.rawQuery(
       'SELECT app_package, COUNT(*) as count FROM intention_logs '

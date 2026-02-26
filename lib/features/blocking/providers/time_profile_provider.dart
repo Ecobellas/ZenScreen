@@ -93,32 +93,42 @@ class TimeProfileNotifier extends StateNotifier<TimeProfileState> {
 
   /// Loads all profiles from the database, creating presets if needed.
   Future<void> loadProfiles() async {
-    state = state.copyWith(isLoading: true);
-
-    await _ensurePresetProfiles();
-
-    final rows = await _db.getTimeProfiles();
-    final profiles = rows.map((r) => TimeProfile.fromMap(r)).toList();
-
-    // Load blocked groups for each profile.
-    final blockedGroups = <int, List<int>>{};
-    for (final profile in profiles) {
-      if (profile.id != null) {
-        blockedGroups[profile.id!] =
-            await _db.getProfileBlockedGroups(profile.id!);
-      }
+    if (_db.isStub) {
+      state = const TimeProfileState(isLoading: false);
+      return;
     }
 
-    state = TimeProfileState(
-      profiles: profiles,
-      profileBlockedGroups: blockedGroups,
-      isLoading: false,
-      activeProfileId: state.activeProfileId,
-    );
+    state = state.copyWith(isLoading: true);
+
+    try {
+      await _ensurePresetProfiles();
+
+      final rows = await _db.getTimeProfiles();
+      final profiles = rows.map((r) => TimeProfile.fromMap(r)).toList();
+
+      // Load blocked groups for each profile.
+      final blockedGroups = <int, List<int>>{};
+      for (final profile in profiles) {
+        if (profile.id != null) {
+          blockedGroups[profile.id!] =
+              await _db.getProfileBlockedGroups(profile.id!);
+        }
+      }
+
+      state = TimeProfileState(
+        profiles: profiles,
+        profileBlockedGroups: blockedGroups,
+        isLoading: false,
+        activeProfileId: state.activeProfileId,
+      );
+    } catch (_) {
+      state = const TimeProfileState(isLoading: false);
+    }
   }
 
   /// Creates preset profiles if they don't already exist.
   Future<void> _ensurePresetProfiles() async {
+    if (_db.isStub) return;
     final existing = await _db.getTimeProfiles();
     final existingNames = existing.map((r) => r['name'] as String).toSet();
 
@@ -156,6 +166,7 @@ class TimeProfileNotifier extends StateNotifier<TimeProfileState> {
     bool isStrictMode = false,
     List<int> blockedGroupIds = const [],
   }) async {
+    if (_db.isStub) return -1;
     final id = await _db.insertTimeProfile({
       'name': name,
       'start_hour': startTime.hour,
@@ -184,6 +195,7 @@ class TimeProfileNotifier extends StateNotifier<TimeProfileState> {
     bool? isStrictMode,
     List<int>? blockedGroupIds,
   }) async {
+    if (_db.isStub) return;
     final values = <String, dynamic>{};
     if (name != null) values['name'] = name;
     if (startTime != null) {
@@ -211,6 +223,7 @@ class TimeProfileNotifier extends StateNotifier<TimeProfileState> {
 
   /// Deletes a profile.
   Future<void> deleteProfile(int profileId) async {
+    if (_db.isStub) return;
     await _db.deleteTimeProfile(profileId);
     if (state.activeProfileId == profileId) {
       state = state.copyWith(clearActiveProfile: true);

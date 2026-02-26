@@ -64,6 +64,7 @@ class StatisticsNotifier extends StateNotifier<AsyncValue<void>> {
 
   /// Gets per-app usage breakdown for a date, sorted by usage.
   Future<List<AppUsageEntry>> getPerAppBreakdown(DateTime date) async {
+    if (_db.isStub) return [];
     final db = await _db.database;
     final dateStr = date.toIso8601String().substring(0, 10);
 
@@ -151,6 +152,7 @@ class StatisticsNotifier extends StateNotifier<AsyncValue<void>> {
   }
 
   Future<DailyStats?> _getStatsForDate(DateTime date) async {
+    if (_db.isStub) return null;
     final db = await _db.database;
     final dateStr = date.toIso8601String().substring(0, 10);
     final rows = await db.query(

@@ -65,26 +65,36 @@ class BlockingNotifier extends StateNotifier<BlockingState> {
 
   /// Loads daily limits from the database.
   Future<void> _loadDailyLimits() async {
+    if (_db.isStub) {
+      state = const BlockingState(isLoading: false);
+      return;
+    }
+
     state = state.copyWith(isLoading: true);
-    final today = DateTime.now().toIso8601String().substring(0, 10);
 
-    // Reset usage if the date has changed.
-    if (state.currentDate.isNotEmpty && state.currentDate != today) {
-      await _db.resetAllDailyUsage();
+    try {
+      final today = DateTime.now().toIso8601String().substring(0, 10);
+
+      // Reset usage if the date has changed.
+      if (state.currentDate.isNotEmpty && state.currentDate != today) {
+        await _db.resetAllDailyUsage();
+      }
+
+      final rows = await _db.getDailyLimits();
+      final limits = <int, DailyLimit>{};
+      for (final row in rows) {
+        final limit = DailyLimit.fromMap(row);
+        limits[limit.groupId] = limit;
+      }
+
+      state = BlockingState(
+        dailyLimits: limits,
+        isLoading: false,
+        currentDate: today,
+      );
+    } catch (_) {
+      state = const BlockingState(isLoading: false);
     }
-
-    final rows = await _db.getDailyLimits();
-    final limits = <int, DailyLimit>{};
-    for (final row in rows) {
-      final limit = DailyLimit.fromMap(row);
-      limits[limit.groupId] = limit;
-    }
-
-    state = BlockingState(
-      dailyLimits: limits,
-      isLoading: false,
-      currentDate: today,
-    );
   }
 
   /// Reloads daily limits from the database.
@@ -155,6 +165,7 @@ class BlockingNotifier extends StateNotifier<BlockingState> {
 
   /// Increments daily usage for the group that contains this package.
   Future<void> updateUsage(String packageName, int minutes) async {
+    if (_db.isStub) return;
     final appGroupState = _ref.read(appGroupProvider);
     final group = _findGroupForPackage(packageName, appGroupState);
     if (group == null || group.id == null) return;
@@ -176,6 +187,7 @@ class BlockingNotifier extends StateNotifier<BlockingState> {
     required int limitMinutes,
     bool isActive = true,
   }) async {
+    if (_db.isStub) return;
     final limit = DailyLimit(
       groupId: groupId,
       limitMinutes: limitMinutes,
@@ -192,6 +204,7 @@ class BlockingNotifier extends StateNotifier<BlockingState> {
 
   /// Removes a daily limit for a group.
   Future<void> removeDailyLimit(int groupId) async {
+    if (_db.isStub) return;
     await _db.deleteDailyLimit(groupId);
     final updatedLimits = Map<int, DailyLimit>.from(state.dailyLimits);
     updatedLimits.remove(groupId);

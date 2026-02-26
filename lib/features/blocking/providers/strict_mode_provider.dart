@@ -78,14 +78,24 @@ class StrictModeNotifier extends StateNotifier<StrictModeState> {
 
   /// Loads strict mode config from the database.
   Future<void> _loadConfig() async {
+    if (_db.isStub) {
+      state = state.copyWith(isLoading: false);
+      return;
+    }
+
     state = state.copyWith(isLoading: true);
-    final row = await _db.getStrictModeConfig();
-    if (row != null) {
-      state = state.copyWith(
-        config: StrictModeConfig.fromMap(row),
-        isLoading: false,
-      );
-    } else {
+
+    try {
+      final row = await _db.getStrictModeConfig();
+      if (row != null) {
+        state = state.copyWith(
+          config: StrictModeConfig.fromMap(row),
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(isLoading: false);
+      }
+    } catch (_) {
       state = state.copyWith(isLoading: false);
     }
   }
@@ -112,7 +122,9 @@ class StrictModeNotifier extends StateNotifier<StrictModeState> {
       isScheduled: false,
       activatedAt: now,
     );
-    await _db.updateStrictModeConfig(config.toMap());
+    if (!_db.isStub) {
+      await _db.updateStrictModeConfig(config.toMap());
+    }
     state = state.copyWith(
       config: config,
       remainingEmergencyBypasses: 1,
@@ -127,7 +139,9 @@ class StrictModeNotifier extends StateNotifier<StrictModeState> {
       isActive: false,
       clearActivatedAt: true,
     );
-    await _db.updateStrictModeConfig(config.toMap());
+    if (!_db.isStub) {
+      await _db.updateStrictModeConfig(config.toMap());
+    }
     state = state.copyWith(config: config);
   }
 
@@ -144,7 +158,9 @@ class StrictModeNotifier extends StateNotifier<StrictModeState> {
       isScheduled: true,
       scheduledDays: days,
     );
-    await _db.updateStrictModeConfig(config.toMap());
+    if (!_db.isStub) {
+      await _db.updateStrictModeConfig(config.toMap());
+    }
     state = state.copyWith(config: config);
   }
 
@@ -156,7 +172,9 @@ class StrictModeNotifier extends StateNotifier<StrictModeState> {
       scheduledDays: [],
       clearActivatedAt: true,
     );
-    await _db.updateStrictModeConfig(config.toMap());
+    if (!_db.isStub) {
+      await _db.updateStrictModeConfig(config.toMap());
+    }
     state = state.copyWith(config: config);
   }
 

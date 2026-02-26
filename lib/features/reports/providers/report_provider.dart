@@ -186,21 +186,23 @@ class ReportNotifier extends StateNotifier<ReportState> {
     final intentionCounts = <IntentionType, int>{
       for (final type in IntentionType.values) type: 0,
     };
-    final db = await _db.database;
-    final intentionRows = await db.query(
-      'intention_logs',
-      where: 'timestamp >= ? AND timestamp <= ?',
-      whereArgs: [
-        lastMonday.toIso8601String(),
-        lastSunday
-            .add(const Duration(hours: 23, minutes: 59, seconds: 59))
-            .toIso8601String(),
-      ],
-    );
-    for (final row in intentionRows) {
-      final type =
-          IntentionType.values[row['intention_type'] as int? ?? 0];
-      intentionCounts[type] = (intentionCounts[type] ?? 0) + 1;
+    if (!_db.isStub) {
+      final db = await _db.database;
+      final intentionRows = await db.query(
+        'intention_logs',
+        where: 'timestamp >= ? AND timestamp <= ?',
+        whereArgs: [
+          lastMonday.toIso8601String(),
+          lastSunday
+              .add(const Duration(hours: 23, minutes: 59, seconds: 59))
+              .toIso8601String(),
+        ],
+      );
+      for (final row in intentionRows) {
+        final type =
+            IntentionType.values[row['intention_type'] as int? ?? 0];
+        intentionCounts[type] = (intentionCounts[type] ?? 0) + 1;
+      }
     }
 
     // Choose motivational message and tip based on performance.

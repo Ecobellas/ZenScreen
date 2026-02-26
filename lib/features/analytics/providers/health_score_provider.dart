@@ -118,6 +118,7 @@ class HealthScoreNotifier extends StateNotifier<AsyncValue<int>> {
   }
 
   Future<DailyStats?> _getStatsForDate(DateTime date) async {
+    if (_db.isStub) return null;
     final db = await _db.database;
     final dateStr = _formatDate(date);
     final rows = await db.query(

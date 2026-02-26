@@ -70,6 +70,10 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
 
   /// Exports all data as CSV and returns the file path (STNG-05).
   Future<String> exportDataAsCsv() async {
+    if (_db.isStub) {
+      throw StateError('Export is not available on web');
+    }
+
     final db = await _db.database;
 
     // Query all tables.
@@ -119,16 +123,18 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
 
   /// Resets all data except premium status (STNG-05).
   Future<void> resetAllData() async {
-    final db = await _db.database;
+    if (!_db.isStub) {
+      final db = await _db.database;
 
-    // Clear all tables.
-    await db.delete('daily_stats');
-    await db.delete('intention_logs');
-    await db.delete('friction_events');
-    await db.delete('blocked_apps');
-    await db.delete('blocking_schedules');
-    await db.delete('daily_limits');
-    await db.delete('profile_blocked_groups');
+      // Clear all tables.
+      await db.delete('daily_stats');
+      await db.delete('intention_logs');
+      await db.delete('friction_events');
+      await db.delete('blocked_apps');
+      await db.delete('blocking_schedules');
+      await db.delete('daily_limits');
+      await db.delete('profile_blocked_groups');
+    }
 
     // Reset preferences but keep premium status and onboarding.
     await _prefs.setDailyGoalMinutes(120);
